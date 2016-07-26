@@ -3,13 +3,14 @@
 These scripts take care of <b>automatically labeling the data collected from markers of a motion capture system</b>, according to the names given in the first frame. 
 
 --------------------------------------------------------------------------------------------------
-<i><b>If you use this code for your research then please remember to cite our paper:</b></i>
+The same code was used in the following paper:
  
 >Anna Maria Feit, Daryl Weir, and Antti Oulasvirta. 2016.  
 >How We Type: Movement Strategies and Performance in Everyday Typing.
 >In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems (CHI '16).
 >ACM, New York, NY, USA, 4262-4273. DOI: http://dx.doi.org/10.1145/2858036.2858233
 
+<i><b>If you use this code for your research then please remember to cite it</b></i>
 --------------------------------------------------------------------------------------------------
 
 The instructions shown here for how to use the scripts can also be found in the Jupyter Notebook README.ipynb
