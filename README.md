@@ -2,6 +2,8 @@
 # Automatic Labeling of Motion Capture Markers
 These scripts take care of <b>automatically labeling the data collected from markers of a motion capture system</b>, according to the names given in the first frame. 
 
+The instructions shown here for how to use the scripts can also be found in the Jupyter Notebook README.ipynb
+
 ### Data Format
 For the scripts to work, the motion capture files must fulfill the following criteria  (see example log file): </b>
 - comma separated value (csv) files
