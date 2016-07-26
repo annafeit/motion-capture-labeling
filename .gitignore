@@ -1,0 +1,6 @@
+.ipynb_checkpoints/README-checkpoint.ipynb
+.project
+*.pydevproject
+helper.pyc
+*.lnk
+*.pyc
