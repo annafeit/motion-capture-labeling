@@ -92,7 +92,7 @@ t = Take(logfile,
 The <code> Take </code> object can then be used to plot any given frame for inspection of the labeled data, by using  <br>
 <code>plotAt(frame, filename="")</code><br>
 By default the plot is displayed and not saved. <code>filename = ""</code> Defines the filename for saving the plot. If given, the plot is not shown to the user but only saved. 
-The lower and upper limits of the x,y, and z axis can be quickly changed by setting the <code>PLOT_X_LIM, PLOT_Y_LIM, PLOT_Z_LIM</code> properties of the <code>Take</code> object. 
+The lower and upper limits of the x,y, and z axis can be quickly changed by setting the <code>PLOT_X_LIM</code>, <code>PLOT_Y_LIM</code>, <code>PLOT_Z_LIM</code> properties of the <code>Take</code> object. 
 
 
 ```python
