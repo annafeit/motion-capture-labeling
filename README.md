@@ -2,6 +2,16 @@
 # Automatic Labeling of Motion Capture Markers
 These scripts take care of <b>automatically labeling the data collected from markers of a motion capture system</b>, according to the names given in the first frame. 
 
+--------------------------------------------------------------------------------------------------
+<i><b>If you use this code for your research then please remember to cite our paper:</b></i>
+ 
+<code>Anna Maria Feit, Daryl Weir, and Antti Oulasvirta. 2016. 
+How We Type: Movement Strategies and Performance in Everyday Typing.
+In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems (CHI '16).
+ACM, New York, NY, USA, 4262-4273. DOI: http://dx.doi.org/10.1145/2858036.2858233</code>
+
+--------------------------------------------------------------------------------------------------
+
 ### Data Format
 For the scripts to work, the motion capture files must fulfill the following criteria  (see example log file): </b>
 - comma separated value (csv) files
