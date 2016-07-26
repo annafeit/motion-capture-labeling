@@ -3,7 +3,7 @@
 These scripts take care of <b>automatically labeling the data collected from markers of a motion capture system</b>, according to the names given in the first frame. 
 
 --------------------------------------------------------------------------------------------------
-This code was used in the [How we type](http://userinterfaces.aalto.fi/how-we-type/) project. If you use it for your research then please remember to cite:
+<b>This code was used in the [How we type](http://userinterfaces.aalto.fi/how-we-type/) project.</b> If you use it for your research then please remember to cite:
  
 >Anna Maria Feit, Daryl Weir, and Antti Oulasvirta. 2016.  
 >How We Type: Movement Strategies and Performance in Everyday Typing.
@@ -12,7 +12,7 @@ This code was used in the [How we type](http://userinterfaces.aalto.fi/how-we-ty
 
 --------------------------------------------------------------------------------------------------
 
-The instructions shown here for how to use the scripts can also be found in the Jupyter Notebook README.ipynb
+<i>Note: the following instructions can also be found in the Jupyter Notebook README.ipynb</i>
 
 ### Data Format
 For the scripts to work, the motion capture files must fulfill the following criteria  (see example log file): </b>
