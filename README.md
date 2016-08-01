@@ -88,12 +88,12 @@ plot_every_X_frames = 10000
 
 t = Take(logfile, 
          fallback_frames = fallback_frames,
-         labeled_marker_names = [], 
-         check_hand_skeleton_heuristics = 0,
-         use_skeleton = 1,
-         debug = 1,
-         ignore_marker_names = [],
-         plot_every_X_frames = 10000
+         labeled_marker_names = labeled_marker_names, 
+         check_hand_skeleton_heuristics = check_hand_skeleton_heuristics,
+         use_skeleton = use_skeleton,
+         debug = debug,
+         ignore_marker_names = ignore_marker_names,
+         plot_every_X_frames = plot_every_X_frames
         )
 ```
 
