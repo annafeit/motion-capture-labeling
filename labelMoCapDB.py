@@ -54,6 +54,7 @@ class MoCapLabeledDB:
 
     def __init__(self, datafile,         
                  mirrorX=1,  
+                 frame_marker_names={},
                  fallback_frames=[], 
                  labeled_marker_names=[],
                  check_hand_data = 1,
@@ -61,6 +62,7 @@ class MoCapLabeledDB:
                  use_skeleton=1):
         
         self.datafile = datafile
+        self.frame_marker_names = frame_marker_names                            #{int:{string:string}} for a certain frame fix to-be-labeled names on marker names
         self.fallback_frames = fallback_frames  
         self.ignoredMarkerNames = ignored_markers
         self.mirrorX = mirrorX        
@@ -99,7 +101,7 @@ class MoCapLabeledDB:
         for name in labeledNames:
             self.markers.append(MoCapMarker(name, self.firstFrame, self.lastFrame, name))        
         self.names = [l.name for l in self.markers]                             # String[]: initially labeled names. Those we try to fill.
-        
+        print self.names
         #Init with data from first frame.
         firstFrameData = self.get_rawdata(data_in, 0, mirrorX)
         for m in self.markers:
@@ -184,23 +186,30 @@ class MoCapLabeledDB:
             for marker in self.markers:
                 if logdata[marker.name] != []:
                     marker.append(logdata[marker.name])
-                else:
-                    #this is a special case, all markers should be available!
-                    print "--> Hardcoded case, no marker data for ", marker.name, ". uid: ",self.uid, "condition: ", self.condition, "frame: ", str(frame)
+                else:                    
                     not_remappedMarkers.append(marker)
             print "--> Hardcoded groundtruth at", str(frame)
             if not_remappedMarkers != []:
                 self.markAsMissing(not_remappedMarkers, frame, refFrame)
             return 0
         
-        #-----> case marker known to be labeled correctly throughout log
+        #-----> case that marker known to be labeled correctly throughout log or for this specific frame
         alreadyLabeled = []
         for marker in self.markers:
             if marker.name in self.fixedLabeledMarkers and marker.name in logdata.keys():
                 if logdata[marker.name] != []:
                     marker.append(logdata[marker.name])
                     logdata.pop(marker.name,0)
-                    alreadyLabeled.append(marker.name)                
+                    alreadyLabeled.append(marker.name)     
+            elif frame in self.frame_marker_names:
+                marker_map = self.frame_marker_names[frame]
+                if marker.name in marker_map:
+                    new_name = marker_map[marker.name]
+                    if logdata[new_name] != []:
+                        marker.append(logdata[new_name])
+                        logdata.pop(new_name,0)
+                        alreadyLabeled.append(marker.name)                          
+                        print "--> Hardcoded groundtruth at", str(frame), "for", marker.name
             
         if refFrame==-1:
             refFrame = frame-1
@@ -290,7 +299,7 @@ class MoCapLabeledDB:
 
 
         else:
-            print "There are no unlabeled markers. Something's wrong"
+            print "There is no marker data in this frame."
             distance += self.markAsMissing(self.markers, frame, refFrame)
             
         
@@ -536,11 +545,9 @@ class MoCapLabeledDB:
         """
         for marker in self.markers:
             name = marker.getname()
-            name_components = name.split("_") #Hands_L_R1
             #child
-            childcomponent = childLookup(name_components[-1])
-            if childcomponent != -1:
-                childname = "_".join(name_components[:-1] + [childcomponent])
+            childname = childLookup(name)
+            if childname != -1:
                 try:
                     childmarker = self.getMarkerByName(childname)
                 except ValueError:
@@ -550,9 +557,8 @@ class MoCapLabeledDB:
                 marker.setChildMarker(childmarker)
 
             #parent
-            parentcomponent = parentLookup(name_components[-1])
-            if parentcomponent != -1:
-                parentname = "_".join(name_components[:-1] + [parentcomponent])
+            parentname = parentLookup(name)
+            if parentname != -1:                
                 try:
                     parentmarker = self.getMarkerByName(parentname)
                 except ValueError:

@@ -64,7 +64,10 @@ class Take:
     IGNORED_MARKER_NAMES = []
     
     # if > 0, plots the *labeled* marker data every X frames
-    PLOT_EVERY_X_FRAMES = 10000
+    PLOT_EVERY_X_FRAMES = 1000
+    
+    # hardcoded mapping of to-be-mapped markers on actual marker names in the logfile for certainf frames. Dict from frame to dict of mapping: {int:{string:string}}
+    FRAME_MARKER_NAMES = {}
     
     # hardcoded fallback frames which are labeled correctly (1st frame already implicitly included)
     FALLBACK_FRAMES = []
@@ -78,13 +81,14 @@ class Take:
     PLOT_Z_LIM = (-0.5,0.5)      
     
     def __init__(self, filename, 
+                 frame_marker_names=[],
                  fallback_frames = [], 
                  labeled_marker_names=[], 
                  check_hand_skeleton_heuristics=0,
                  use_skeleton=1,
                  debug =1,
                  ignore_marker_names=[],
-                 plot_every_X_frames = 10000, 
+                 plot_every_X_frames = 1000, 
                  plot_xlim = (-0.5,0.5), 
                  plot_ylim = (-0.5,0.5), 
                  plot_zlim = (-0.5,0.5)):
@@ -94,6 +98,7 @@ class Take:
         plt.ioff() #Turns interactive plots off and only shows if wanted.      
         self.markers = []  
         self.file = filename 
+        self.FRAME_MARKER_NAMES = frame_marker_names
         self.FALLBACK_FRAMES = fallback_frames
         self.LABELED_MARKER_NAMES = labeled_marker_names
         self.CHECK_HAND_SKELETON_HEURISTICS = check_hand_skeleton_heuristics
@@ -131,7 +136,8 @@ class Take:
         #takes care of actually reading it in and labeling it
         labeledDB = MoCapLabeledDB(mocapfile,  
                                    mirrorX=1, #set this to 0 if data seems mirrored
-                                   fallback_frames=self.FALLBACK_FRAMES,
+                                   frame_marker_names = self.FRAME_MARKER_NAMES,
+                                   fallback_frames = self.FALLBACK_FRAMES,
                                    labeled_marker_names=self.LABELED_MARKER_NAMES,
                                    check_hand_data = self.CHECK_HAND_SKELETON_HEURISTICS,
                                    ignored_markers = self.IGNORED_MARKER_NAMES,
