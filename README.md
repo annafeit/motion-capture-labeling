@@ -43,9 +43,10 @@ The heuristics detect cases where markers of neighboring fingers are swapped, or
 ### Validation and manual labeling
 The <b> labeled data is plotted every 10000 frames </b> and the plot is saved for inspection. 
 
-<b>If the automatic process fails, it can be supported manually in 2 ways: </b>
-1. The user can manually label all markers in single frames and define them as <b>fallback frames</b>. For those, the user guarantees that all markers are present and given the correct label. Then the automatic labeling relies on the given label continues from that point as described above.
-2. <b>Fully labeled markers</b> can be defined, for which the user guarantees that they are correctly labeled throughout the whole take. Every point labeled with the name of the marker in the motion capture file, is labeled as such by the algorithm and not based on the nearest neighbor approach.
+<b>If the automatic process fails, it can be supported manually in 3 ways: </b>
+1. <b> Marker mappings </b> can be defined at a frame level. If the name for a certain marker at a certain frame is known (e.g. from inspecting the recording) it can be specified as an argument to the labeling process. Only for this frame the algorithm will rely on the name given by the user and label the corresponding marker data accordingly. 
+2. The user can manually label all markers in a single frame and define those frames as <b>fallback frames</b>. For those, the user guarantees that all present markers are given the correct label. Then the automatic labeling relies on the given label and continues from that point as described above. 
+3. <b>Fully labeled markers</b> can be defined, for which the user guarantees that they are correctly labeled throughout the whole take. Every point labeled with the name of the marker in the motion capture file, is labeled as such by the algorithm and not based on the nearest neighbor approach.
 
 ## Running the scripts
 To run the labeling process for a given file, simply create a new <code> Take </code> object with the filename as the only required argument. It takes care of:
@@ -54,6 +55,7 @@ To run the labeling process for a given file, simply create a new <code> Take </
 - Plotting the data every 10000 frames and saving the file in the <code> IMG </code> folger for inspection
 
 In addition, the following arguments can be defined to modify the labeling process as described above (default values given):
+- <code><b>frame_marker_names = {}</b></code> <br> A dictionary of frames to a mapping from marker name to marker name. Specifies for a marker which label it corresponds to at the given frame.
 - <code><b>fallback_frames = []</b></code> <br> A list of fallback frames at which the captured data is labeled correctly
 - <code><b>labeled_marker_names = []</b></code> <br> A list of marker names that the algorithm can assume to be labeled correctly <i> throughout  the complete file </i>
 - <code><b>check_hand_skeleton_heuristics = 0</b></code> <br> Binary value indicatinf if the heuristics for checking for swapped hand markers should be used. Set only to 1 if the marker are named as described above
@@ -73,25 +75,28 @@ from Take import *
 # the only required argument is the filename:
 logfile = "Logfiles/test.csv"
 
-# the following arguments can be given to control the labeling process, see the file Take.py for further description
-fallback_frames = []
-labeled_marker_names=[]
-check_hand_skeleton_heuristics=0
-use_skeleton=1
-debug =1
-ignore_marker_names=[]
+# the following arguments can be given to control the labeling process, see the file Take.py for further description. 
+# Here: examples how to specify 
+frame_marker_names = {100:{"Hands_L_L4":"Hands_L_L4"}} 
+fallback_frames = [2,3] 
+labeled_marker_names=["Hands_L_L1"]
+check_hand_skeleton_heuristics = 0
+use_skeleton = 1
+debug = 1
+ignore_marker_names = ["Hands_K_right_top", "Hands_K_right_bottom", "Hands_K_left_top"]
 plot_every_X_frames = 10000
 
 # Create the Take object, which takes care of labeling, plotting and writing the new logfile. 
 # Note that only the first argument is required and all others are optional. For the default values, simply write
-#t = Take(logfile)
+# t = Take(logfile)
 
 t = Take(logfile, 
+         frame_marker_names = frame_marker_names,
          fallback_frames = fallback_frames,
          labeled_marker_names = labeled_marker_names, 
          check_hand_skeleton_heuristics = check_hand_skeleton_heuristics,
          use_skeleton = use_skeleton,
-         debug = debug,
+         debug =debug,
          ignore_marker_names = ignore_marker_names,
          plot_every_X_frames = plot_every_X_frames
         )
