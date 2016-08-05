@@ -55,6 +55,7 @@ To run the labeling process for a given file, simply create a new <code> Take </
 - Plotting the data every 10000 frames and saving the file in the <code> IMG </code> folger for inspection
 
 In addition, the following arguments can be defined to modify the labeling process as described above (default values given):
+- <code><b>marker_names = []</b></code> <br> A list of the marker names that should be used for labeling and that were used to label the data in the very first frame. If this is set to [] the script will try to figure them out automatically by taking only those names that do not start with "Marker" (e.g. Marker_27916). 
 - <code><b>frame_marker_names = {}</b></code> <br> A dictionary of frames to a mapping from marker name to marker name. Specifies for a marker which label it corresponds to at the given frame.
 - <code><b>fallback_frames = []</b></code> <br> A list of fallback frames at which the captured data is labeled correctly
 - <code><b>labeled_marker_names = []</b></code> <br> A list of marker names that the algorithm can assume to be labeled correctly <i> throughout  the complete file </i>
@@ -77,7 +78,8 @@ logfile = "Logfiles/test.csv"
 
 # the following arguments can be given to control the labeling process, see the file Take.py for further description. 
 # Here: examples how to specify 
-frame_marker_names = {100:{"Hands_L_L4":"Hands_L_L4"}} 
+marker_names = []
+frame_marker_names = {100:{"Hands_L_L4":"Hands_L_R4", "Hands_L_L3": "Hands_L_L2"}} 
 fallback_frames = [2,3] 
 labeled_marker_names=["Hands_L_L1"]
 check_hand_skeleton_heuristics = 0
@@ -91,6 +93,7 @@ plot_every_X_frames = 10000
 # t = Take(logfile)
 
 t = Take(logfile, 
+         marker_names = marker_names,
          frame_marker_names = frame_marker_names,
          fallback_frames = fallback_frames,
          labeled_marker_names = labeled_marker_names, 

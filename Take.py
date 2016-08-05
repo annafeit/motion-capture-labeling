@@ -60,11 +60,14 @@ class Take:
     # Prints the names of the relabeled markers when plotting data of a frame
     DEBUG = 1
     
+    # the final marker names as labeled in the first frame. If this is set to [] the script will try to figure them out automatically. Setting them is more reliable
+    MARKER_NAMES = []
+    
     # the names of the markers that should be ignored while relabeling, e.g. already labeled reference markers
     IGNORED_MARKER_NAMES = []
     
     # if > 0, plots the *labeled* marker data every X frames
-    PLOT_EVERY_X_FRAMES = 1000
+    PLOT_EVERY_X_FRAMES = 10000
     
     # hardcoded mapping of to-be-mapped markers on actual marker names in the logfile for certainf frames. Dict from frame to dict of mapping: {int:{string:string}}
     FRAME_MARKER_NAMES = {}
@@ -81,6 +84,7 @@ class Take:
     PLOT_Z_LIM = (-0.5,0.5)      
     
     def __init__(self, filename, 
+                 marker_names = [],
                  frame_marker_names=[],
                  fallback_frames = [], 
                  labeled_marker_names=[], 
@@ -88,7 +92,7 @@ class Take:
                  use_skeleton=1,
                  debug =1,
                  ignore_marker_names=[],
-                 plot_every_X_frames = 1000, 
+                 plot_every_X_frames = 10000, 
                  plot_xlim = (-0.5,0.5), 
                  plot_ylim = (-0.5,0.5), 
                  plot_zlim = (-0.5,0.5)):
@@ -96,7 +100,8 @@ class Take:
             filename: the path to the log file                     
         """  
         plt.ioff() #Turns interactive plots off and only shows if wanted.      
-        self.markers = []  
+        self.markers = []
+        self.MARKER_NAMES = marker_names          
         self.file = filename 
         self.FRAME_MARKER_NAMES = frame_marker_names
         self.FALLBACK_FRAMES = fallback_frames
@@ -136,6 +141,7 @@ class Take:
         #takes care of actually reading it in and labeling it
         labeledDB = MoCapLabeledDB(mocapfile,  
                                    mirrorX=1, #set this to 0 if data seems mirrored
+                                   marker_names = self.MARKER_NAMES,
                                    frame_marker_names = self.FRAME_MARKER_NAMES,
                                    fallback_frames = self.FALLBACK_FRAMES,
                                    labeled_marker_names=self.LABELED_MARKER_NAMES,

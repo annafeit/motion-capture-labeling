@@ -54,6 +54,7 @@ class MoCapLabeledDB:
 
     def __init__(self, datafile,         
                  mirrorX=1,  
+                 marker_names = [],
                  frame_marker_names={},
                  fallback_frames=[], 
                  labeled_marker_names=[],
@@ -95,13 +96,18 @@ class MoCapLabeledDB:
         # Get the labeled names and create marker objects
         names = self.allOriginalNames
         self.allNames= [l for l in names  if not l in self.ignoredMarkerNames]       # String[]: all valid marker names, labeled or automatically created
-        labeledNames = [l for l in names for m in [self.UNLABELED_MARKER_NAME_REGEX.search(l)] if not m]           
-        labeledNames = [l for l in labeledNames if not l in self.ignoredMarkerNames] #Filter out ignored marker names                                     
+        if marker_names == []:
+            labeledNames = [l for l in names for m in [self.UNLABELED_MARKER_NAME_REGEX.search(l)] if not m]           
+            labeledNames = [l for l in labeledNames if not l in self.ignoredMarkerNames] #Filter out ignored marker names
+            print "Inferred the following marker names:", labeledNames                                                 
+        else:
+            labeledNames = marker_names    
+            
         # Initialize markers
         for name in labeledNames:
             self.markers.append(MoCapMarker(name, self.firstFrame, self.lastFrame, name))        
-        self.names = [l.name for l in self.markers]                             # String[]: initially labeled names. Those we try to fill.
-        print self.names
+        self.names = [l.name for l in self.markers]                             # String[]: initially labeled names. Those we try to fill.    
+        
         #Init with data from first frame.
         firstFrameData = self.get_rawdata(data_in, 0, mirrorX)
         for m in self.markers:
@@ -161,7 +167,6 @@ class MoCapLabeledDB:
         for frame in range(1,self.frames):
             if ((frame%1000)==0):
                 print "Frame", frame, "/", self.frames
-            
             #get the data from that frame and relabel
             logdata = self.get_rawdata(data_in, frame, self.mirrorX)
             self.relabelAllMarkers(frame, logdata)
