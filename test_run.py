@@ -1,5 +1,9 @@
 from Take import *
 
+from time import time
+
+start = time()
+
 
 # the only required argument is the filename:
 logfile = "Logfiles/test.csv"
@@ -14,11 +18,12 @@ check_hand_skeleton_heuristics = 0
 use_skeleton = 1
 debug = 1
 ignore_marker_names = ["Hands_K_right_top", "Hands_K_right_bottom", "Hands_K_left_top"]
-plot_every_X_frames = 10000
+plot_every_X_frames = 100
 
 # Create the Take object, which takes care of labeling, plotting and writing the new logfile. 
 # Note that only the first argument is required and all others are optional. For the default values, simply write
 # t = Take(logfile)
+
 
 t = Take(logfile, 
          marker_names = marker_names,
@@ -31,3 +36,12 @@ t = Take(logfile,
          ignore_marker_names = ignore_marker_names,
          plot_every_X_frames = plot_every_X_frames
         )
+end = time()
+
+def get_time_format(elapsed):
+    hour = (elapsed) // (60*60)
+    min = (elapsed - hour * 60*60) // (60)
+    sec = elapsed % 60
+    return '{:02.0f}:{:02.0f}:{:02.0f}'.format(hour, min, sec)
+
+print("The script ran for ", get_time_format(end - start))
