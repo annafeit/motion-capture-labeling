@@ -26,6 +26,13 @@
  OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  """
  
+import os
+if os.environ.get('DISPLAY','') == '':
+    print('no display found. Using non-interactive Agg backend')
+    # The following is necessary if you are running on a headless
+    import matplotlib
+    matplotlib.use('Agg')
+
 import time
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
